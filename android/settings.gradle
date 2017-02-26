@@ -1,0 +1,3 @@
+rootProject.name = 'JeffSquaredMessaging'
+
+include ':app'
