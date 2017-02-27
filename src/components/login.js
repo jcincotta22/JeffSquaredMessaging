@@ -43,13 +43,38 @@ export default React.createClass({
   },
   onPress: function() {
       let sb = new SendBird({
-      appId: APP_ID,
+        appId: APP_ID,
+      });
+    sb.connect(this.state.username, function(user, error) {
+      console.log('successfully connected', sb)
+      sb.OpenChannel.createChannel("New Channel", "New Channel.com", "Data", function (channel, error) {
+        if (error) {
+          console.error(error);
+          return;
+        }
+        console.log("Channel", channel);
+      });
+
+
+      sb.updateCurrentUserInfo("Test Nickname", "Test.com", function(response, error) {
+        console.log("update:", sb.currentUser.nickname, sb);
+      });
+      var openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
+
+      openChannelListQuery.next(function (response, error) {
+        if (error) {
+          console.log(error);
+          return;
+        }
+
+        console.log("Open channel:", response);
+      });
     });
-    sb.connect(this.state.username, function(user, error) { console.log('success', sb)});
     // sb.updateCurrentUserInfo(this.state.username, function(response, error) {
+    this.props.navigator.push({ name: 'channels' });
     //     console.log("user name:", this.state.username);
     // });
-    this.props.navigator.push({ name: 'channels' });
+
   }
 });
 

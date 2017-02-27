@@ -14,9 +14,11 @@ const PULLDOWN_DISTANCE = 40;
 
 import SendBird from 'sendbird';
 
+
 export default React.createClass({
   getInitialState: function() {
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    console.log("datasource:", ds)
     return {
       channelList: [],
       dataSource: ds.cloneWithRows([]),
@@ -26,28 +28,29 @@ export default React.createClass({
     };
   },
   componentWillMount: function() {
-    let username = 'Jeff'
-    let sb = new SendBird({
-      appId: APP_ID
-    });
-    sb.connect(username, function(user, error) { console.log('success', sb)});
-    sb.OpenChannel.createChannel("Test", "Test", "none", function (channel, error) {
-      if (error) {
-          console.error(error);
-          return;
-      }
-      console.log("channel:", channel);
-    });
+    console.log('mounted')
+    // let sb = new SendBird({
+    //   appId: APP_ID
+    // });
+    // sb.connect("Jeff", function(user, error) { console.log('success', sb)});
+    // sb.OpenChannel.createChannel("Test", "Test", "none", function (channel, error) {
+    //   if (error) {
+    //       console.error(error);
+    //       return;
+    //   }
+    //   console.log("channel:", channel);
+    // });
 
-    let openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
-    openChannelListQuery.next(function (response, error) {
-      if (error) {
-          console.log("Error:", error);
-          return;
-      }
-      console.log(openChannelListQuery);
-    });
-    // this.getChannelList(1);
+    // let openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
+    // openChannelListQuery.next(function (response, error) {
+    //   if (error) {
+    //       console.log("Error:", error);
+    //       return;
+    //   }
+    //   console.log(openChannelListQuery);
+    // });
+    // let openChannelListQuery = this.OpenChannel.createOpenChannelListQuery();
+
   },
   render: function() {
       return (
@@ -85,7 +88,7 @@ export default React.createClass({
     SendBird.getChannelList({
       page: page,
       limit: 20,
-      successFunc : (data) => {
+      successFunc: (data) => {
         this.setState({channelList: this.state.channelList.concat(data.channels)}, () => {
           this.setState({
             dataSource: this.state.dataSource.cloneWithRows(this.state.channelList),
@@ -106,6 +109,45 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: '#6E5BAA'
+    backgroundColor: '#ffffff'
+  },
+  listContainer: {
+    flex: 11,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    marginTop: 10
+  },
+  listItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f7f8fc',
+    borderBottomWidth: 0.5,
+    borderColor: '#D0DBE4',
+    padding: 5
+  },
+  listIcon: {
+    justifyContent: 'flex-start',
+    paddingLeft: 10,
+    paddingRight: 15
+  },
+  channelIcon: {
+    width: 30,
+    height: 30
+  },
+  listInfo: {
+    flex: 1,
+    justifyContent: 'flex-start'
+  },
+  titleLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#60768b',
+  },
+  memberLabel: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#abb8c4',
   }
 });

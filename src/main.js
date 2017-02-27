@@ -4,7 +4,6 @@ import {
   Navigator,
   StyleSheet
 } from 'react-native';
-import Main from './main';
 import Login from './components/login';
 import Channels from './components/channels';
 
