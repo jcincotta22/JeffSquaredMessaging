@@ -8,6 +8,8 @@ import {
   StyleSheet
 } from 'react-native';
 
+import sendbird from 'sendbird';
+
 
 export default React.createClass({
   getInitialState: function() {
@@ -40,7 +42,19 @@ export default React.createClass({
     );
   },
   onPress: function() {
-    console.log(this.state.username);
+    sendbird.init({
+      app_id: 'E7E18930-F07B-4E9F-8012-620FD30FC9A2',
+      guest_id: this.state.username,
+      user_name: this.state.username,
+      image_url: "",
+      access_token: "",
+      successFunc: (data) => {
+        console.log('success');
+      },
+      errorFunc: (status, error) => {
+        this.setState({username: ''});
+      }
+    });
   }
 });
 
