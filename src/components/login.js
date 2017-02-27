@@ -12,12 +12,12 @@ import SendBird from 'sendbird';
 
 
 export default React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       username: ''
     };
   },
-  render: function() {
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.loginContainer}>
@@ -41,7 +41,7 @@ export default React.createClass({
       </View>
     );
   },
-  onPress: function() {
+  onPress() {
       let sb = new SendBird({
         appId: APP_ID,
       });

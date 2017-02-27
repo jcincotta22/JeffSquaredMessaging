@@ -14,9 +14,8 @@ const PULLDOWN_DISTANCE = 40;
 
 import SendBird from 'sendbird';
 
-
 export default React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     console.log("datasource:", ds)
     return {
@@ -27,19 +26,25 @@ export default React.createClass({
       channelName: ''
     };
   },
-  componentWillMount: function() {
+  componentWillMount() {
     console.log('mounted')
-    // let sb = new SendBird({
-    //   appId: APP_ID
-    // });
-    // sb.connect("Jeff", function(user, error) { console.log('success', sb)});
-    // sb.OpenChannel.createChannel("Test", "Test", "none", function (channel, error) {
-    //   if (error) {
-    //       console.error(error);
-    //       return;
-    //   }
-    //   console.log("channel:", channel);
-    // });
+    let sb = new SendBird({
+      appId: APP_ID,
+    });
+
+    sb.connect("Jeff", function(user, error) {
+
+      console.log('success', sb)
+      sb.OpenChannel.createChannel("Test2", "Test2", "none", function (channel, error) {
+        if (error) {
+            console.error(error);
+            return;
+        }
+        console.log("Test channel:", channel);
+      });
+
+
+    });
 
     // let openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
     // openChannelListQuery.next(function (response, error) {
@@ -52,7 +57,7 @@ export default React.createClass({
     // let openChannelListQuery = this.OpenChannel.createOpenChannelListQuery();
 
   },
-  render: function() {
+  render() {
       return (
         <View style={styles.container}>
           <View style={styles.listContainer}>
@@ -78,10 +83,10 @@ export default React.createClass({
         </View>
       );
     },
-    onChannelPress: function(url) {
+    onChannelPress(url) {
        console.log(url);
     },
-    getChannelList: function(page) {
+    getChannelList(page) {
     if (page == 0) {
       return;
     }

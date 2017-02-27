@@ -13,11 +13,11 @@ const ROUTES = {
 };
 
 export default React.createClass({
-  renderScene: function(route, navigator) {
+  renderScene(route, navigator) {
     let Component = ROUTES[route.name];
     return <Component route={route} navigator={navigator} />;
   },
-  render: function() {
+  render() {
     return (
       <Navigator
         style={ styles.container }
