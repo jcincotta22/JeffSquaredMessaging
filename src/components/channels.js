@@ -14,7 +14,6 @@ const PULLDOWN_DISTANCE = 40;
 
 import SendBird from 'sendbird';
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-console.log("datasource:", ds)
 
 class Channels extends Component {
   constructor(props) {
@@ -38,10 +37,11 @@ class Channels extends Component {
    if (page == 0) {
      return;
    }
+   console.log("page:")
    SendBird.getChannelList({
      page: page,
      limit: 20,
-     successFunc: (data) => {
+     successFunc(data){
        this.setState({channelList: this.state.channelList.concat(data.channels)}, () => {
          this.setState({
            dataSource: this.state.dataSource.cloneWithRows(this.state.channelList),
@@ -50,7 +50,7 @@ class Channels extends Component {
          });
        });
      },
-     errorFunc: (status, error) => {
+     errorFunc(status, error){
        console.log(status, error);
      }
    });
@@ -59,6 +59,7 @@ class Channels extends Component {
 
   componentWillMount() {
     console.log('mounted')
+    console.log("dataSource:", this.state.dataSource)
     let sb = new SendBird({
       appId: APP_ID,
     });
@@ -71,9 +72,16 @@ class Channels extends Component {
             console.error(error);
             return;
         }
-        console.log("Test channel:", channel);
-      });
+        var openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
 
+        openChannelListQuery.next(function (response, error) {
+          if (error) {
+            console.log(error);
+            return;
+          }
+          console.log("getting list:", response);
+        });
+      });
 
     });
   }
