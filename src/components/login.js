@@ -27,6 +27,7 @@ export default class Login extends Component {
      userId: '',
       username: '',
       connectLabel: 'CONNECT',
+      buttonDisabled: true,
       errorMessage: ''
    };
    this.onPress = this.onPress.bind(this);
@@ -36,6 +37,12 @@ export default class Login extends Component {
 
  onPress(){
    Keyboard.dismiss();
+
+   if (!this.state.buttonDisabled) {
+      this._onPressDisconnect();
+      return;
+    }
+
    if (this.state.username.trim().length == 0 || this.state.userId.trim().length == 0) {
       this.setState({
         userId: '',
@@ -48,7 +55,7 @@ export default class Login extends Component {
    sb = SendBird.getInstance();
    var _SELF = this;
 
-   sb.connect(this.state.userId, function(user, error) {
+   sb.connect(_SELF.state.userId, function(user, error) {
    console.log('successfully connected', sb)
      if (error) {
         this.setState({
