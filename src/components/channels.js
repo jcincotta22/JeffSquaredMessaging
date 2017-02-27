@@ -13,19 +13,50 @@ import APP_ID from './keys.js';
 const PULLDOWN_DISTANCE = 40;
 
 import SendBird from 'sendbird';
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+console.log("datasource:", ds)
 
-export default React.createClass({
-  getInitialState() {
-    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    console.log("datasource:", ds)
-    return {
-      channelList: [],
-      dataSource: ds.cloneWithRows([]),
-      page: 0,
-      next: 0,
-      channelName: ''
-    };
-  },
+class Channels extends Component {
+  constructor(props) {
+   super(props);
+   this.state = {
+     channelList: [],
+     dataSource: ds.cloneWithRows([]),
+     page: 0,
+     next: 0,
+     channelName: ''
+   };
+   this.onChannelPress = this.onChannelPress.bind(this);
+   this.getChannelList = this.getChannelList.bind(this);
+ }
+
+ onChannelPress(url) {
+    console.log(url);
+ }
+
+ getChannelList(page) {
+   if (page == 0) {
+     return;
+   }
+   SendBird.getChannelList({
+     page: page,
+     limit: 20,
+     successFunc: (data) => {
+       this.setState({channelList: this.state.channelList.concat(data.channels)}, () => {
+         this.setState({
+           dataSource: this.state.dataSource.cloneWithRows(this.state.channelList),
+           page: data.page,
+           next: data.next
+         });
+       });
+     },
+     errorFunc: (status, error) => {
+       console.log(status, error);
+     }
+   });
+ }
+
+
   componentWillMount() {
     console.log('mounted')
     let sb = new SendBird({
@@ -45,6 +76,7 @@ export default React.createClass({
 
 
     });
+  }
 
     // let openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
     // openChannelListQuery.next(function (response, error) {
@@ -56,7 +88,6 @@ export default React.createClass({
     // });
     // let openChannelListQuery = this.OpenChannel.createOpenChannelListQuery();
 
-  },
   render() {
       return (
         <View style={styles.container}>
@@ -82,32 +113,8 @@ export default React.createClass({
           </View>
         </View>
       );
-    },
-    onChannelPress(url) {
-       console.log(url);
-    },
-    getChannelList(page) {
-    if (page == 0) {
-      return;
     }
-    SendBird.getChannelList({
-      page: page,
-      limit: 20,
-      successFunc: (data) => {
-        this.setState({channelList: this.state.channelList.concat(data.channels)}, () => {
-          this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(this.state.channelList),
-            page: data.page,
-            next: data.next
-          });
-        });
-      },
-      errorFunc: (status, error) => {
-        console.log(status, error);
-      }
-    });
-  }
-});
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -156,3 +163,5 @@ const styles = StyleSheet.create({
     color: '#abb8c4',
   }
 });
+
+export default Channels;

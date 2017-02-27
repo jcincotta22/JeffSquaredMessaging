@@ -11,12 +11,51 @@ import APP_ID from './keys.js';
 import SendBird from 'sendbird';
 
 
-export default React.createClass({
-  getInitialState() {
-    return {
-      username: ''
-    };
-  },
+class Login extends Component {
+  constructor(props) {
+   super(props);
+   this.state = {
+     username: ''
+   };
+   this.onPress = this.onPress.bind(this);
+ }
+
+ onPress() {
+     let sb = new SendBird({
+       appId: APP_ID,
+     });
+   sb.connect(this.state.username, function(user, error) {
+     console.log('successfully connected', sb)
+     sb.OpenChannel.createChannel("New Channel", "New Channel.com", "Data", function (channel, error) {
+       if (error) {
+         console.error(error);
+         return;
+       }
+       console.log("Channel", channel);
+     });
+
+
+     sb.updateCurrentUserInfo("Test Nickname", "Test.com", function(response, error) {
+       console.log("update:", sb.currentUser.nickname, sb);
+     });
+     var openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
+
+     openChannelListQuery.next(function (response, error) {
+       if (error) {
+         console.log(error);
+         return;
+       }
+
+       console.log("Open channel:", response);
+     });
+   });
+   // sb.updateCurrentUserInfo(this.state.username, function(response, error) {
+   this.props.navigator.push({ name: 'channels' });
+   //     console.log("user name:", this.state.username);
+   // });
+
+ }
+
   render() {
     return (
       <View style={styles.container}>
@@ -40,43 +79,9 @@ export default React.createClass({
         </View>
       </View>
     );
-  },
-  onPress() {
-      let sb = new SendBird({
-        appId: APP_ID,
-      });
-    sb.connect(this.state.username, function(user, error) {
-      console.log('successfully connected', sb)
-      sb.OpenChannel.createChannel("New Channel", "New Channel.com", "Data", function (channel, error) {
-        if (error) {
-          console.error(error);
-          return;
-        }
-        console.log("Channel", channel);
-      });
-
-
-      sb.updateCurrentUserInfo("Test Nickname", "Test.com", function(response, error) {
-        console.log("update:", sb.currentUser.nickname, sb);
-      });
-      var openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
-
-      openChannelListQuery.next(function (response, error) {
-        if (error) {
-          console.log(error);
-          return;
-        }
-
-        console.log("Open channel:", response);
-      });
-    });
-    // sb.updateCurrentUserInfo(this.state.username, function(response, error) {
-    this.props.navigator.push({ name: 'channels' });
-    //     console.log("user name:", this.state.username);
-    // });
-
   }
-});
+
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -122,3 +127,5 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   }
 });
+
+export default Login;
