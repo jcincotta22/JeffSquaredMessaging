@@ -93,6 +93,7 @@ class Channels extends Component {
         <View style={styles.container}>
           <View style={styles.listContainer}>
             <ListView
+              enableEmptySections={true}
               dataSource={this.state.dataSource}
               renderRow={(rowData) =>
                 <TouchableHighlight onPress={() => this.onChannelPress(rowData.channel_url)}>
