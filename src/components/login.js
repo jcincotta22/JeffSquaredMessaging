@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   StyleSheet
 } from 'react-native';
-
+import APP_ID from './keys.js'
 import SendBird from 'sendbird';
 
 
@@ -43,7 +43,7 @@ export default React.createClass({
   },
   onPress: function() {
       let sb = new SendBird({
-      appId: 'E7E18930-F07B-4E9F-8012-620FD30FC9A2',
+      appId: APP_ID,
       guestId: this.state.username,
       userId: this.state.username,
       image_url: "",
