@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   StyleSheet
 } from 'react-native';
-import APP_ID from './keys.js'
+import APP_ID from './keys.js';
 import SendBird from 'sendbird';
 
 
@@ -44,19 +44,12 @@ export default React.createClass({
   onPress: function() {
       let sb = new SendBird({
       appId: APP_ID,
-      guestId: this.state.username,
-      userId: this.state.username,
-      image_url: "",
-      access_token: "",
-      successFunc: (data) => {
-        console.log('success');
-      },
-      errorFunc: (status, error) => {
-        this.setState({username: ''});
-      }
     });
-
-    sb.connect(this.state.username, function(user, error) { console.log('success')});
+    sb.connect(this.state.username, function(user, error) { console.log('success', sb)});
+    // sb.updateCurrentUserInfo(this.state.username, function(response, error) {
+    //     console.log("user name:", this.state.username);
+    // });
+    this.props.navigator.push({ name: 'channels' });
   }
 });
 

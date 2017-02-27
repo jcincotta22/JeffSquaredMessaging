@@ -6,14 +6,16 @@ import {
 } from 'react-native';
 import Main from './main';
 import Login from './components/login';
+import Channels from './components/channels';
 
-var ROUTES = {
-  login: Login
+const ROUTES = {
+  login: Login,
+  channels: Channels
 };
 
 export default React.createClass({
   renderScene: function(route, navigator) {
-    var Component = ROUTES[route.name];
+    let Component = ROUTES[route.name];
     return <Component route={route} navigator={navigator} />;
   },
   render: function() {
