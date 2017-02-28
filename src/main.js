@@ -25,6 +25,7 @@ export default class Main extends Component {
 
   componentDidMount() {
     sb = new SendBird({appId: APP_ID});
+    console.log("sendbird:", sb)
 
     AppState.addEventListener('change', function(currentAppState){
       if (currentAppState === 'active') {

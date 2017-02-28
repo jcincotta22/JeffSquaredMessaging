@@ -356,6 +356,7 @@ export default class Chat extends Component {
             onEndReachedThreshold={PULLDOWN_DISTANCE}
             dataSource={this.state.dataSource}
             renderRow={(rowData) => {
+              console.log("rowData:", rowData.messageType)
               if (rowData.hasOwnProperty('isDate')) {
                 return (
                   <View style={[styles.listItem, {transform: [{ scaleY: -1 }]}, {flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}]}>
