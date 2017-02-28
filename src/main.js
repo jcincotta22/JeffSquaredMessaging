@@ -8,13 +8,16 @@ import {
   Platform
 } from 'react-native';
 import Login from './components/login';
-import OpenChannel from './components/openChannel';
+import Chat from './components/chat';
 import CreateChannel from './components/createChannel';
+import OpenChannel from './components/openChannel';
 import APP_ID from './components/keys';
 import SendBird from 'sendbird';
 
 const ROUTES = {
   login: Login,
+  chat: Chat,
+  createChannel: CreateChannel,
   openChannel: OpenChannel
 };
 

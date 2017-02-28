@@ -47,7 +47,7 @@ export default class Login extends Component {
       this.setState({
         userId: '',
         username: '',
-        errorMessage: 'User ID and Nickname must be required.'
+        errorMessage: 'Must Supply a User ID and Nickname.'
       });
       return;
     }
@@ -56,7 +56,7 @@ export default class Login extends Component {
    var _SELF = this;
 
    sb.connect(_SELF.state.userId, function(user, error) {
-   console.log('successfully connected', sb)
+     console.log('successfully connected', sb)
      if (error) {
         this.setState({
           userId: '',
@@ -91,7 +91,6 @@ export default class Login extends Component {
   });
 }
 
-
   _onPressOpenChannel() {
     this.props.navigator.push({name: 'openChannel'});
   }
@@ -124,7 +123,6 @@ export default class Login extends Component {
     textColor: '#ffffff'
   }
 }
-
 
   render() {
     return (

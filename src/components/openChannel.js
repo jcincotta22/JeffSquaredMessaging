@@ -55,6 +55,7 @@ export default class OpenChannel extends Component {
   }
 
   _onChannelPress(channel) {
+    var _SELF = this;
     channel.enter(function(response, error) {
       if (error) {
         if (error.code == 900100) {
@@ -63,7 +64,8 @@ export default class OpenChannel extends Component {
           alert('Enter openChannel Fail.');
         }
       }
-      this.props.navigator.push({name: 'chat', channel: channel, refresh: this._refresh});
+      console.log('opening channel')
+      _SELF.props.navigator.push({name: 'chat', channel: channel, refresh: _SELF._refresh});
     })
   }
 
