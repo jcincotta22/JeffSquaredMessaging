@@ -95,10 +95,6 @@ export default class Login extends Component {
     this.props.navigator.push({name: 'openChannel'});
   }
 
-  _onPressOpenChannel() {
-    this.props.navigator.push({name: 'openChannel'});
-  }
-
   _onPressGroupChannel() {
     this.props.navigator.push({name: 'groupChannel'});
   }

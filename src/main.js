@@ -92,6 +92,7 @@ export default class Main extends Component {
   }
 
   _renderScene(route, navigator) {
+    console.log('route:', route, 'nav:', navigator)
     var Component = ROUTES[route.name];
     return <Component route={route} navigator={navigator} />;
   }
