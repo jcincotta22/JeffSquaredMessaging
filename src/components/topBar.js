@@ -50,6 +50,15 @@ export default class TopBar extends Component {
           image={addIcon}
         />
       )
+    } else if (this.props.onCreateGroupChannel) {
+      return (
+        <ImageButton
+          underlayColor={'#4e4273'}
+          onPress={this.props.onCreateGroupChannel}
+          imageStyle={[styles.imageButton, {width: 20, height: 20}]}
+          image={addIcon}
+        />
+      )
     } else if (this.props.onOpenMenu) {
         return (
           <ImageButton
