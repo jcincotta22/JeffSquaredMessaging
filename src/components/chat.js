@@ -256,10 +256,14 @@ export default class Chat extends Component {
           {text: 'Participant list', onPress: () => {this._onPressParticipants();}},
           {text: 'Blocked user list', onPress: () => {this._onPressBlockList();}},
           {text: 'Exit this channel', onPress: () => {this._onPressExitChannel();}},
+          {text: 'Invite users to this channel', onPress: () => {
+            this.props.navigator.push({name: 'inviteUser', channel: this.state.channel});
+          }},
           {text: 'Close'}
         ]
       )
     } else {
+      console.log('Participant invite!')
       var _SELF = this;
       Alert.alert(
         'Group Channel Event',

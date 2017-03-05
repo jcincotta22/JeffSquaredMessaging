@@ -13,12 +13,18 @@ import CreateChannel from './components/createChannel';
 import OpenChannel from './components/openChannel';
 import APP_ID from './components/keys';
 import SendBird from 'sendbird';
+import Participants from './components/participants';
+import InviteUser from './components/inviteUser';
+import Members from './components/members'
 
 const ROUTES = {
   login: Login,
   chat: Chat,
   createChannel: CreateChannel,
-  openChannel: OpenChannel
+  openChannel: OpenChannel,
+  participants: Participants,
+  inviteUser: InviteUser,
+  members: Members
 };
 
 export default class Main extends Component {
