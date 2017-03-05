@@ -38,17 +38,18 @@ export default class InviteUser extends Component {
   }
 
   _onUserPress(rowData) {
-    let _inviteList = this.state.inviteList.map(invitee => {
-      invitee.userId !== rowData.userId
-    });
-
+    let _inviteList = this.state.inviteList;
     let _userList = this.state.list.map((user) => {
       if (user.userId == rowData.userId) {
         user.check = !user.check;
         if (user.check) _inviteList.push(user)
+        else _inviteList = _inviteList.filter((invitee) => {
+          invitee.userId !== user.userId;
+        });
       }
       return user
     });
+
     this.setState({ inviteList: _inviteList });
     this.setState({ list: _userList }, () => {
       let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -67,6 +68,7 @@ export default class InviteUser extends Component {
       });
     } else {
       let _inviteIds = this.state.inviteList.map((user) => { return user.userId });
+
       this.state.channel.inviteWithUserIds(_inviteIds, (response, error) => {
         if (error) {
           console.log(error);

@@ -43,8 +43,8 @@ export default class Chat extends Component {
     sb = SendBird.getInstance();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      channel: props.route.channel,
-      name: props.route.name,
+      channel: this.props.route.channel,
+      name: this.props.route.name,
       dataSource: ds.cloneWithRows([]),
       messageQuery: props.route.channel.createPreviousMessageListQuery(),
       messages: [],
