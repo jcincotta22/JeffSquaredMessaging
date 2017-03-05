@@ -12,6 +12,7 @@ import Chat from './components/chat';
 import CreateChannel from './components/createChannel';
 import OpenChannel from './components/openChannel';
 import GroupChannel from './components/groupChannel';
+import InviteUser from './components/inviteUser';
 import APP_ID from './components/keys';
 import SendBird from 'sendbird';
 
@@ -20,7 +21,8 @@ const ROUTES = {
   chat: Chat,
   createChannel: CreateChannel,
   openChannel: OpenChannel,
-  groupChannel: GroupChannel
+  groupChannel: GroupChannel,
+  inviteUser: InviteUser
 };
 
 export default class Main extends Component {

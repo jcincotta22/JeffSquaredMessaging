@@ -14,8 +14,8 @@ import APP_ID from './keys.js';
 import TopBar from './topBar';
 import moment from 'moment';
 import SendBird from 'sendbird';
-var sb = null;
-var ds = null;
+let sb = null;
+let ds = null;
 
 export default class GroupChannel extends Component {
   constructor(props) {
@@ -30,7 +30,6 @@ export default class GroupChannel extends Component {
     };
     this._getChannelList = this._getChannelList.bind(this);
     this._onHideChannel = this._onHideChannel.bind(this);
-    this._refresh = this._refresh.bind(this);
     this._channelUpdate = this._channelUpdate.bind(this);
   }
 
@@ -38,90 +37,69 @@ export default class GroupChannel extends Component {
     this._getChannelList();
 
     // channel handler
-    var _SELF = this;
-    var ChannelHandler = new sb.ChannelHandler();
-    ChannelHandler.onMessageReceived = function(channel, message){
-      _SELF._channelUpdate(channel);
+    let ChannelHandler = new sb.ChannelHandler();
+    ChannelHandler.onMessageReceived = (channel, message) => {
+      this._channelUpdate(channel);
     };
     sb.addChannelHandler('ListHandler', ChannelHandler);
   }
 
   _channelUpdate(channel) {
-    var _SELF = this;
-    var _exist = false;
-    var _list = _SELF.state.channelList.map(function(ch) {
-      if (channel.url == ch.url ) {
-        _exist = true;
-        return channel
-      }
-      return ch
+    let _list = this.state.channelList.filter((ch) => {
+      return channel.url !== ch.url;
     });
-    if (!_exist) {
-      _list.push(channel);
-    }
-    _SELF.setState({
-      channelList: _list,
-      dataSource: ds.cloneWithRows(_SELF.state.channelList)
-    });
-  }
+    _list.push(channel);
 
-  _refresh(channel) {
-    this._channelUpdate(channel);
+    this.setState({channelList: _list}, () => {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this.state.channelList)
+      });
+    });
   }
 
   _channelTitle(members) {
-    var _members = [];
-    members.forEach(function(user) {
-      if (user.userId != sb.currentUser.userId) {
-        _members.push(user);
-      }
-    });
-    var _title = _members.map(function(elem){
-      if (elem.userId != sb.currentUser.userId) {
-          return elem.nickname;
-      }
-    }).join(",");
-    _title = _title.replace(',,', ',');
+    let _title = members.map((member) => {
+      if (member.userId !== sb.currentUser.userId) return member.nickname;
+    }).join(",").replace(',,', ',');
     return (_title.length > 15) ? _title.substring(0, 11) + '...' : _title;
   }
 
   _onChannelPress(channel) {
-    var _SELF = this;
-    if (_SELF.state.editMode) {
+    if (this.state.editMode) {
       Alert.alert(
         'Group Channel Edit',
         null,
         [
           {text: 'leave', onPress: () => {
-            channel.leave(function(response, error) {
+            channel.leave((response, error) => {
               if (error) {
                 console.log(error);
                 return;
               }
-              _SELF._onHideChannel(channel);
+              this._onHideChannel(channel);
             });
           }},
           {text: 'hide', onPress: () => {
-            channel.hide(function(response, error) {
+            channel.hide((response, error) => {
               if (error) {
                 console.log(error);
                 return;
               }
-              _SELF._onHideChannel(channel);
+              this._onHideChannel(channel);
             });
           }},
           {text: 'Cancel'}
         ]
       )
     } else {
-      _SELF.props.navigator.push({name: 'chat', channel: channel, _onHideChannel: this._onHideChannel, refresh: this._refresh});
+      this.props.navigator.push({name: 'chat', channel: channel, _onHideChannel: this._onHideChannel, refresh: this._channelUpdate(channel)});
     }
   }
 
   _onHideChannel(channel) {
     this.setState({channelList: this.state.channelList.filter((ch) => {
       return channel.url !== ch.url
-    })}, ()=> {
+    })}, () => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this.state.channelList)
       });
@@ -129,15 +107,14 @@ export default class GroupChannel extends Component {
   }
 
   _getChannelList() {
-    var _SELF = this;
-    _SELF.state.listQuery.next(function(channelList, error){
+    this.state.listQuery.next((channelList, error) => {
       if (error) {
         console.log(error);
         return;
       }
-      _SELF.setState({channelList: _SELF.state.channelList.concat(channelList)}, () => {
-        _SELF.setState({
-          dataSource: _SELF.state.dataSource.cloneWithRows(_SELF.state.channelList)
+      this.setState({channelList: this.state.channelList.concat(channelList)}, () => {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(this.state.channelList)
         });
       });
     });
@@ -148,14 +125,13 @@ export default class GroupChannel extends Component {
   }
 
   _onGroupChannel() {
-    var _SELF = this;
-    if (_SELF.state.editMode) {
+    if (this.state.editMode) {
       Alert.alert(
         'Group Channel Event',
         null,
         [
           {text: 'Done', onPress: () => {
-            _SELF.setState({editMode: false});
+            this.setState({editMode: false});
           }}
         ]
       )
@@ -165,10 +141,10 @@ export default class GroupChannel extends Component {
         null,
         [
           {text: 'Edit', onPress: () => {
-            _SELF.setState({editMode: true});
+            this.setState({editMode: true});
           }},
           {text: 'Invite', onPress: () => {
-            _SELF.props.navigator.push({name: 'inviteUser', refresh: _SELF._refresh});
+            this.props.navigator.push({name: 'inviteUser', refresh: this._channelUpdate});
           }},
           {text: 'Cancel'}
         ]
