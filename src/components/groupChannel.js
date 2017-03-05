@@ -31,6 +31,7 @@ export default class GroupChannel extends Component {
     this._getChannelList = this._getChannelList.bind(this);
     this._onHideChannel = this._onHideChannel.bind(this);
     this._channelUpdate = this._channelUpdate.bind(this);
+    this._refresh = this._refresh.bind(this);
   }
 
   componentWillMount() {
@@ -64,6 +65,10 @@ export default class GroupChannel extends Component {
     return (_title.length > 15) ? _title.substring(0, 11) + '...' : _title;
   }
 
+  _refresh(channel) {
+    this._channelUpdate(channel);
+  }
+
   _onChannelPress(channel) {
     if (this.state.editMode) {
       Alert.alert(
@@ -92,7 +97,7 @@ export default class GroupChannel extends Component {
         ]
       )
     } else {
-      this.props.navigator.push({name: 'chat', channel: channel, _onHideChannel: this._onHideChannel, refresh: this._channelUpdate(channel)});
+      this.props.navigator.push({name: 'chat', channel: channel, _onHideChannel: this._onHideChannel, refresh: this._refresh});
     }
   }
 
@@ -144,7 +149,7 @@ export default class GroupChannel extends Component {
             this.setState({editMode: true});
           }},
           {text: 'Invite', onPress: () => {
-            this.props.navigator.push({name: 'inviteUser', refresh: this._channelUpdate});
+            this.props.navigator.push({name: 'inviteUser', refresh: this._refresh});
           }},
           {text: 'Cancel'}
         ]
@@ -166,6 +171,7 @@ export default class GroupChannel extends Component {
             enableEmptySections={true}
             onEndReached={() => this._getChannelList()}
             onEndReachedThreshold={PULLDOWN_DISTANCE}
+            removeClippedSubviews={false}
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
               <TouchableHighlight onPress={() => this._onChannelPress(rowData)}>
