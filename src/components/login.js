@@ -58,7 +58,7 @@ export default class Login extends Component {
    sb.connect(_SELF.state.userId, function(user, error) {
      console.log('successfully connected', sb)
      if (error) {
-        this.setState({
+        _SELF.setState({
           userId: '',
           username: '',
           errorMessage: 'Login Error'
