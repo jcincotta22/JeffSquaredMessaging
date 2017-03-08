@@ -31,7 +31,6 @@ export default class Button extends Component {
       backgroundColor: this.props.disabled ? this.style.disabledColor : this.style.backgroundColor
     }
   }
-
   _textStyle() {
     return {
       width: 230,

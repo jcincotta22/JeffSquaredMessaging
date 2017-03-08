@@ -34,15 +34,17 @@ export default class InviteUser extends Component {
   }
 
   componentWillMount() {
+    console.log("Members:", this.state.channel.createMutedUserListQuery().userIds)
     this._getUserList();
-    console.log(this._getUserList());
   }
 
   _onUserPress(rowData) {
     var _SELF = this;
     var _inviteList = _SELF.state.inviteList;
+    console.log('invite list:', _inviteList)
     var _userList = _SELF.state.list.map((user) => {
       if (user.userId == rowData.userId) {
+        console.log("user 1:", user)
         if (user.check) {
             user.check = false;
             _inviteList = _inviteList.filter((userId) => {
@@ -50,9 +52,11 @@ export default class InviteUser extends Component {
             })
         } else {
           user.check = true;
+          console.log("user 2:", user)
           _inviteList.push(user);
         }
       }
+      console.log("user 3:", user)
       return user
     });
     _SELF.setState({inviteList: _inviteList});
@@ -63,6 +67,7 @@ export default class InviteUser extends Component {
   }
 
   _onInvite() {
+    console.log('invited:', this.state.inviteList)
     var _SELF = this;
     if (!_SELF.state.channel) {
       sb.GroupChannel.createChannel(this.state.inviteList, false, function(channel, error) {
@@ -74,6 +79,7 @@ export default class InviteUser extends Component {
       });
     } else {
       var _inviteIds = this.state.inviteList.map(function(user) {return user.userId});
+      try{
       _SELF.state.channel.inviteWithUserIds(_inviteIds, function(response, error) {
         if (error) {
           console.log(error);
@@ -81,6 +87,9 @@ export default class InviteUser extends Component {
         }
         _SELF.props.navigator.pop();
       });
+    }catch(err){
+      console.log("error:", err)
+    }
     }
   }
 

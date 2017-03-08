@@ -70,6 +70,7 @@ export default class Chat extends Component {
 
   componentDidMount() {
     console.log("componentDidMount");
+    console.log('participants:', this.state.channel.createParticipantListQuery().userIds)
     var _SELF = this;
     if (!_SELF.state.hasRendered){
       _SELF.state.hasRendered = true;
@@ -114,6 +115,7 @@ export default class Chat extends Component {
       }
       sb.addConnectionHandler('ChatView', ConnectionHandler);
     }
+    console.log('participants:', this.state.channel.createParticipantListQuery().userIds)
   }
 
   _getChannelMessage(refresh) {

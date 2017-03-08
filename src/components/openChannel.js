@@ -65,6 +65,7 @@ export default class OpenChannel extends Component {
         }
       }
       console.log('opening channel')
+      console.log('participants:', channel.createParticipantListQuery().userIds)
       _SELF.props.navigator.push({name: 'chat', channel: channel, refresh: _SELF._refresh});
     })
   }

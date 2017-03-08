@@ -29,6 +29,8 @@ export default class Members extends Component {
   }
 
   componentWillMount() {
+    var _members = this.state.channel.members;
+    console.log("members:", _members)
     this._getUserList();
   }
 
@@ -43,6 +45,7 @@ export default class Members extends Component {
 
   _getUserList() {
     var _members = this.state.channel.members;
+    console.log("member:", _members);
     var _response = _members.filter((user) => {return user.userId !== sb.currentUser.userId;});
     this.setState({list: this.state.list.concat(_response)}, () => {
       this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.list)});
