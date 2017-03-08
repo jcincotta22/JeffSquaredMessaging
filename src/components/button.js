@@ -32,7 +32,7 @@ export default class Button extends Component {
     }
   }
   _textStyle() {
-    return {
+    return {  
       width: 230,
       alignSelf: 'center',
       textAlign: 'center',
